@@ -1,0 +1,133 @@
+<div class="container mt-4">
+  <h2>Gestion des Conférences</h2>
+
+  <!-- Formulaire d'ajout/modification -->
+  <div class="card mb-4">
+    <div class="card-header">
+      <h5>{{ isEditing ? 'Modifier' : 'Ajouter' }} une Conférence</h5>
+    </div>
+    <div class="card-body">
+      <form (ngSubmit)="saveConference()">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label>Titre</label>
+            <input type="text" class="form-control" 
+                   [(ngModel)]="isEditing ? selectedConference!.titre : newConference.titre" 
+                   name="titre" required>
+          </div>
+          <div class="col-md-3 mb-3">
+            <label>Type</label>
+            <select class="form-control" 
+                    [(ngModel)]="isEditing ? selectedConference!.type : newConference.type" 
+                    name="type" required>
+              <option *ngFor="let type of typeConferenceOptions" [value]="type">{{ type }}</option>
+            </select>
+          </div>
+          <div class="col-md-3 mb-3">
+            <label>Date</label>
+            <input type="date" class="form-control" 
+                   [(ngModel)]="isEditing ? selectedConference!.date : newConference.date" 
+                   name="date" required>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-3 mb-3">
+            <label>Durée (minutes)</label>
+            <input type="number" class="form-control" 
+                   [(ngModel)]="isEditing ? selectedConference!.duree : newConference.duree" 
+                   name="duree" min="30" required>
+          </div>
+          <div class="col-md-3 mb-3">
+            <label>Nombre d'inscrits</label>
+            <input type="number" class="form-control" 
+                   [(ngModel)]="isEditing ? selectedConference!.nombreInscrits : newConference.nombreInscrits" 
+                   name="nombreInscrits" min="0" required>
+          </div>
+          <div class="col-md-3 mb-3">
+            <label>Score</label>
+            <input type="number" class="form-control" 
+                   [(ngModel)]="isEditing ? selectedConference!.score : newConference.score" 
+                   name="score" min="0" max="5" step="0.1" required>
+          </div>
+          <div class="col-md-3 mb-3">
+            <label>Keynote Speaker</label>
+            <select class="form-control" 
+                    [(ngModel)]="isEditing ? selectedConference!.keynoteId : newConference.keynoteId" 
+                    name="keynoteId" required>
+              <option value="0">Sélectionner...</option>
+              <option *ngFor="let keynote of keynotes" [value]="keynote.id">
+                {{ keynote.prenom }} {{ keynote.nom }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="btn-group">
+          <button type="submit" class="btn btn-primary">
+            {{ isEditing ? 'Mettre à jour' : 'Ajouter' }}
+          </button>
+          <button type="button" class="btn btn-secondary" *ngIf="isEditing" (click)="cancelEdit()">
+            Annuler
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Liste des conférences -->
+  <div class="card">
+    <div class="card-header">
+      <h5>Liste des Conférences ({{ conferences.length }})</h5>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Titre</th>
+              <th>Type</th>
+              <th>Date</th>
+              <th>Durée</th>
+              <th>Inscrits</th>
+              <th>Score</th>
+              <th>Keynote</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let conference of conferences">
+              <td>{{ conference.id }}</td>
+              <td>{{ conference.titre }}</td>
+              <td><span class="badge" [class.bg-primary]="conference.type === 'ACADEMIQUE'" 
+                        [class.bg-success]="conference.type === 'COMMERCIALE'">
+                {{ conference.type }}
+              </span></td>
+              <td>{{ conference.date | date: 'dd/MM/yyyy' }}</td>
+              <td>{{ conference.duree }} min</td>
+              <td>{{ conference.nombreInscrits }}</td>
+              <td>
+                <span class="badge bg-warning">{{ conference.score }} ⭐</span>
+              </td>
+              <td>
+                <span *ngIf="conference.keynote">
+                  {{ conference.keynote.prenom }} {{ conference.keynote.nom }}
+                </span>
+              </td>
+              <td>
+                <button class="btn btn-sm btn-info me-2" [routerLink]="['/reviews', conference.id]">
+                  Reviews
+                </button>
+                <button class="btn btn-sm btn-warning me-2" (click)="selectConference(conference)">
+                  Modifier
+                </button>
+                <button class="btn btn-sm btn-danger" (click)="deleteConference(conference.id)">
+                  Supprimer
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

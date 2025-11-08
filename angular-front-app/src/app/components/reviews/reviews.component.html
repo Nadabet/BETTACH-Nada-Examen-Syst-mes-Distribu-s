@@ -1,0 +1,86 @@
+<div class="container mt-4">
+  <div class="mb-3">
+    <a routerLink="/conferences" class="btn btn-secondary">← Retour aux conférences</a>
+  </div>
+
+  <div *ngIf="conference" class="card mb-4">
+    <div class="card-header bg-primary text-white">
+      <h3>{{ conference.titre }}</h3>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-6">
+          <p><strong>Type:</strong> <span class="badge bg-info">{{ conference.type }}</span></p>
+          <p><strong>Date:</strong> {{ conference.date | date: 'dd/MM/yyyy' }}</p>
+          <p><strong>Durée:</strong> {{ conference.duree }} minutes</p>
+        </div>
+        <div class="col-md-6">
+          <p><strong>Inscrits:</strong> {{ conference.nombreInscrits }}</p>
+          <p><strong>Score moyen:</strong> <span class="badge bg-warning">{{ conference.score }} ⭐</span></p>
+          <p *ngIf="conference.keynote">
+            <strong>Keynote:</strong> {{ conference.keynote.prenom }} {{ conference.keynote.nom }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h4>Reviews de la Conférence</h4>
+
+  <!-- Formulaire d'ajout de review -->
+  <div class="card mb-4">
+    <div class="card-header">
+      <h5>Ajouter un Review</h5>
+    </div>
+    <div class="card-body">
+      <form (ngSubmit)="addReview()">
+        <div class="mb-3">
+          <label>Texte du review</label>
+          <textarea class="form-control" [(ngModel)]="newReview.texte" 
+                    name="texte" rows="3" required></textarea>
+        </div>
+        <div class="mb-3">
+          <label>Note (1-5 étoiles)</label>
+          <select class="form-control" [(ngModel)]="newReview.note" name="note" required>
+            <option [value]="1">1 ⭐</option>
+            <option [value]="2">2 ⭐⭐</option>
+            <option [value]="3">3 ⭐⭐⭐</option>
+            <option [value]="4">4 ⭐⭐⭐⭐</option>
+            <option [value]="5">5 ⭐⭐⭐⭐⭐</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Ajouter le Review</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Liste des reviews -->
+  <div class="card">
+    <div class="card-header">
+      <h5>Liste des Reviews ({{ reviews.length }})</h5>
+    </div>
+    <div class="card-body">
+      <div *ngIf="reviews.length === 0" class="alert alert-info">
+        Aucun review pour cette conférence.
+      </div>
+      <div *ngFor="let review of reviews" class="review-item mb-3">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start">
+              <div>
+                <h6 class="mb-2">
+                  <span class="badge bg-warning">{{ getStars(review.note) }}</span>
+                  <small class="text-muted ms-2">{{ review.date | date: 'dd/MM/yyyy HH:mm' }}</small>
+                </h6>
+                <p class="mb-0">{{ review.texte }}</p>
+              </div>
+              <button class="btn btn-sm btn-danger" (click)="deleteReview(review.id)">
+                Supprimer
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

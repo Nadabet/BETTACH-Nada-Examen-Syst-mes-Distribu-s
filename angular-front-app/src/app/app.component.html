@@ -1,0 +1,49 @@
+﻿<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">
+      <strong> Conference Management System</strong>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/conferences" routerLinkActive="active">
+            Conférences
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/keynotes" routerLinkActive="active">
+            Keynote Speakers
+          </a>
+        </li>
+        <li class="nav-item" *ngIf="isLoggedIn">
+          <span class="nav-link text-white">
+            <i class="bi bi-person-circle"></i> {{ username }}
+          </span>
+        </li>
+        <li class="nav-item" *ngIf="!isLoggedIn">
+          <button class="btn btn-light btn-sm ms-2" (click)="login()">
+            <i class="bi bi-box-arrow-in-right"></i> Login
+          </button>
+        </li>
+        <li class="nav-item" *ngIf="isLoggedIn">
+          <button class="btn btn-outline-light btn-sm ms-2" (click)="logout()">
+            <i class="bi bi-box-arrow-right"></i> Logout
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<router-outlet></router-outlet>
+
+<footer class="bg-light text-center py-3 mt-5">
+  <div class="container">
+    <p class="mb-0 text-muted">
+      &copy; 2024 Conference Management System - Architecture Microservices
+    </p>
+  </div>
+</footer>

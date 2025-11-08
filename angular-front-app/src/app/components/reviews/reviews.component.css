@@ -1,0 +1,19 @@
+.container {
+  max-width: 1000px;
+}
+
+.card {
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.review-item {
+  transition: transform 0.2s;
+}
+
+.review-item:hover {
+  transform: translateY(-2px);
+}
+
+.badge {
+  font-size: 1em;
+}
